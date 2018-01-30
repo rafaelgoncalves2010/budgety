@@ -12,6 +12,15 @@ var bugetController = function(){
 		this.value = value;
 	};
 
+	var caculateTotal = function(type){
+
+		var sum = 0;
+		data.allItens[type].forEach(function(cur){
+			sum = sum + cur.value;
+		});
+
+	}
+
 	var data = {
 		allItens:{
 			exp: [],
@@ -47,6 +56,18 @@ var bugetController = function(){
 			//return the new element
 			return newItem;
 		},
+		calcukateBudget: function(){
+
+			// caculate total income and expenses
+
+
+
+			//calculate the budget: income - expenses
+
+
+			//calcule the percentagem of income that we spent
+
+		},
 
 		testing:function(){
 			console.log(data);
@@ -72,7 +93,7 @@ var UIcontroller = function(){
 				return{
 					type:document.querySelector(DOMstrings.inputType).value,
 					description:document.querySelector(DOMstrings.inputDescription).value,
-					value: document.querySelector(DOMstrings.inputValue).value	
+					value: parseFloat(document.querySelector(DOMstrings.inputValue).value)
 				}
 			},
 
@@ -144,18 +165,22 @@ var controller = function(bugetCtrL,UICtrl){
 		//1- get the field input data
 		var input = UICtrl.getInput();
 		
-		//2- add the item to the budget controller
-		var one = bugetCtrL.addItem(input.type, input.description, input.value);
 
-		//3- add the item to UI
-		UIcontroller.addListItem(one, input.type);
+		if(input.description!=="" && !isNaN(input.value) && input.value > 0){
+
+				//2- add the item to the budget controller
+				var one = bugetCtrL.addItem(input.type, input.description, input.value);
+
+				//3- add the item to UI
+				UIcontroller.addListItem(one, input.type);
 		
-		//4- Clear the fields 
-		UICtrl.clearFields();
+				//4- Clear the fields 
+				UICtrl.clearFields();
 
-		//4- Calcule the budget
+				//4- Calcule the budget
 
-		//5- display the budget on the UI 
+				//5- display the budget on the UI 
+		}
 	}
 
 	return{
