@@ -59,17 +59,23 @@ var budgetController = function(){
 			//return the new element
 			return newItem;
 		},
-		removeItem: function(type,id){
-			// var item = data.allItens[type].id = id;
-			// item.delete();
+		deleteItem: function(type,id){
+			var ids;
+			console.log(data.allItens[type]);
 
+			ids = data.allItens[type].filter(function(current, i){
+				return current.id != id;
+			});
+
+			data.allItens[type] = ids;
+			
+			console.log(data.allItens[type]);
 		},
 		calculateBudget: function(){
 
 			//caculate total income and expenses
 			caculateTotal('inc');
 			caculateTotal('exp');
-
 	
 			//calculate the budget: income - expenses
 			data.budget = data.totals.inc - data.totals.exp;
@@ -143,8 +149,8 @@ var UIcontroller = function(){
 				//insert the html into the dom
 				document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
 			},
-			removeListItem: function(){
-				//document.querySelector(DOMstrings.delete
+			removeListItem: function(type, id){
+				
 			},
 			clearFields:function(){
 
@@ -226,15 +232,19 @@ var controller = function(budgetCtrL,UICtrl){
 		var itemID, splitID, type, ID;
 
 		itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
-		console.log(itemID);
 
 		if(itemID){
 			splitID = itemID.split("-");
 
 			type = splitID[0];
-			ID = splitID[1];
+			ID = Number(splitID[1]);
+
+			budgetCtrL.deleteItem(type,ID);
 		}
-	
+
+		document.getElementById(itemID).parentNode.removeChild(document.getElementById(itemID));
+		
+		updateBudget();
 	}
 
 	return {
